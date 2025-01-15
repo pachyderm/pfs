@@ -139,9 +139,9 @@
 					"version": "0.0.17+nmu1"
 				},
 				{
-					"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_amd64",
+					"key": "postgresql-client-common_248_amd64",
 					"name": "postgresql-client-common",
-					"version": "253.pgdg120+~20230725.2250.g53bdb68"
+					"version": "248"
 				},
 				{
 					"key": "perl_5.36.0-7-p-deb12u1_amd64",
@@ -396,11 +396,11 @@
 		{
 			"arch": "amd64",
 			"dependencies": [],
-			"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_amd64",
+			"key": "postgresql-client-common_248_amd64",
 			"name": "postgresql-client-common",
-			"sha256": "58fc3af1623828342985c932cdebc87b8ff02942043612f80ff946304640a36a",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-common/postgresql-client-common_253.pgdg120+~20230725.2250.g53bdb68_all.deb",
-			"version": "253.pgdg120+~20230725.2250.g53bdb68"
+			"sha256": "da9a9f21d23d29a5a0aaf38083705a2b3528682c338006a2c14d1421c9ec88dd",
+			"url": "https://snapshot-cloudflare.debian.org/archive/debian/20241003T000000Z/pool/main/p/postgresql-common/postgresql-client-common_248_all.deb",
+			"version": "248"
 		},
 		{
 			"arch": "amd64",
@@ -865,9 +865,9 @@
 					"version": "0.0.17+nmu1"
 				},
 				{
-					"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_arm64",
+					"key": "postgresql-client-common_248_arm64",
 					"name": "postgresql-client-common",
-					"version": "253.pgdg120+~20230725.2250.g53bdb68"
+					"version": "248"
 				},
 				{
 					"key": "perl_5.36.0-7-p-deb12u1_arm64",
@@ -1122,11 +1122,11 @@
 		{
 			"arch": "arm64",
 			"dependencies": [],
-			"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_arm64",
+			"key": "postgresql-client-common_248_arm64",
 			"name": "postgresql-client-common",
-			"sha256": "58fc3af1623828342985c932cdebc87b8ff02942043612f80ff946304640a36a",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-common/postgresql-client-common_253.pgdg120+~20230725.2250.g53bdb68_all.deb",
-			"version": "253.pgdg120+~20230725.2250.g53bdb68"
+			"sha256": "da9a9f21d23d29a5a0aaf38083705a2b3528682c338006a2c14d1421c9ec88dd",
+			"url": "https://snapshot-cloudflare.debian.org/archive/debian/20241003T000000Z/pool/main/p/postgresql-common/postgresql-client-common_248_all.deb",
+			"version": "248"
 		},
 		{
 			"arch": "arm64",
