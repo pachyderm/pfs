@@ -3,8 +3,12 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"github.com/pachyderm/pachyderm/v2/src/internal/dbutil"
+	"github.com/pachyderm/pachyderm/v2/src/internal/pachsql"
+	"github.com/pachyderm/pachyderm/v2/src/internal/pfsdb"
 	"net/http"
 	"os"
+	"time"
 
 	"go.uber.org/zap"
 	"sigs.k8s.io/yaml"
@@ -133,6 +137,47 @@ func (a *apiServer) setIdentityServerConfig(ctx context.Context, req *identity.S
 
 func (a *apiServer) GetIdentityServerConfig(ctx context.Context, req *identity.GetIdentityServerConfigRequest) (resp *identity.GetIdentityServerConfigResponse, retErr error) {
 	var config []*identity.IdentityServerConfig
+	go func() {
+		log.Info(ctx, "CUSTOMER_DEBUG: attempting to reach out to postgres with a.env.DB")
+		// check if the db client can connect to the DB and issue queries/statements to other tables.
+		if err := dbutil.WithTx(ctx, a.env.DB, func(ctx context.Context, tx *pachsql.Tx) error {
+			_, err := pfsdb.GetProject(ctx, tx, "default")
+			return err
+		}); err != nil {
+			log.Error(ctx, "CUSTOMER_DEBUG: with tx: unable to get the 'default' project from core.projects:"+err.Error())
+		} else {
+			log.Info(ctx, "CUSTOMER_DEBUG: attempting to reach out to postgres with local DB: SUCCESS")
+		}
+	}()
+	go func() {
+		log.Info(ctx, "CUSTOMER_DEBUG: creating a local DB instance")
+		db, err := dbutil.NewDB(
+			ctx,
+			dbutil.WithHostPort(a.env.Config.PGBouncerHost, a.env.Config.PGBouncerPort),
+			dbutil.WithDBName(a.env.Config.PostgresDBName),
+			dbutil.WithUserPassword(a.env.Config.PostgresUser, a.env.Config.PostgresPassword),
+			dbutil.WithMaxOpenConns(a.env.Config.PGBouncerMaxOpenConns),
+			dbutil.WithMaxIdleConns(a.env.Config.PGBouncerMaxIdleConns),
+			dbutil.WithConnMaxLifetime(time.Duration(a.env.Config.PostgresConnMaxLifetimeSeconds)*time.Second),
+			dbutil.WithConnMaxIdleTime(time.Duration(a.env.Config.PostgresConnMaxIdleSeconds)*time.Second),
+			dbutil.WithSSLMode(dbutil.SSLModeDisable),
+			dbutil.WithQueryLog(a.env.Config.PostgresQueryLogging, "pgx.bouncer"),
+		)
+		if err != nil {
+			log.Error(ctx, "CUSTOMER_DEBUG: could not create local db instance:"+err.Error())
+		}
+		log.Info(ctx, "CUSTOMER_DEBUG: attempting to reach out to database with local DB")
+		// check if the db client can connect to the DB and issue queries/statements to other tables.
+		if err := dbutil.WithTx(ctx, db, func(ctx context.Context, tx *pachsql.Tx) error {
+			_, err := pfsdb.GetProject(ctx, tx, "default")
+			return err
+		}); err != nil {
+			log.Error(ctx, "CUSTOMER_DEBUG: with tx: unable to get the 'default' project from core.projects:"+err.Error())
+		} else {
+			log.Info(ctx, "CUSTOMER_DEBUG: attempting to reach out to database with local DB: SUCCESS")
+		}
+	}()
+
 	err := a.env.DB.SelectContext(ctx, &config, "SELECT issuer, id_token_expiry AS idtokenexpiry, rotation_token_expiry AS rotationtokenexpiry FROM identity.config WHERE id=$1;", configKey)
 	if err != nil {
 		return nil, errors.EnsureStack(err)
