@@ -59,6 +59,12 @@ type APIServer = *apiServer
 
 var _ authiface.APIServer = (APIServer)(nil)
 
+// authToken is a token returned by the auth system.
+type authToken struct {
+	Hash    string `db:"token_hash"`
+	Subject string `db:"subject"`
+}
+
 // apiServer implements the public interface of the Pachyderm auth system,
 // including all RPCs defined in the protobuf spec.
 type apiServer struct {
@@ -524,6 +530,10 @@ func (a *apiServer) activateInTransaction(ctx context.Context, txCtx *txncontext
 
 	// If the token hash was in the request, use it and return an empty response.
 	// Otherwise generate a new random token.
+	//
+	// We want to check to see if an entry with the same hash as the token already exists.
+	// On a restart, we may fall into an invalid state where the token was already inserted previously.
+	// This boolean allows us to detect if we're in that state and proceed gracefully.
 	pachToken := req.RootToken
 	if pachToken == "" {
 		pachToken = uuid.NewWithoutDashes()
@@ -541,8 +551,16 @@ func (a *apiServer) activateInTransaction(ctx context.Context, txCtx *txncontext
 	}); err != nil {
 		return nil, errors.Wrap(err, "add cluster role binding")
 	}
-	if err := a.insertAuthTokenNoTTLInTransaction(ctx, txCtx, auth.HashToken(pachToken), auth.RootUser); err != nil {
-		return nil, errors.Wrap(err, "insert root token")
+
+	if _, err := a.getAuthTokenInTransaction(ctx, txCtx, auth.HashToken(pachToken), auth.RootUser); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			// somehow we thought that the token ought to exist, but it doesn't, so we'll just insert it.
+			if err := a.insertAuthTokenNoTTLInTransaction(ctx, txCtx, auth.HashToken(pachToken), auth.RootUser); err != nil {
+				return nil, errors.Wrap(err, "insert root token")
+			}
+		} else {
+			return nil, errors.Wrap(err, "could not validate a pre-existing root token")
+		}
 	}
 	txCtx.AuthBeingActivated.Store(true)
 	return &auth.ActivateResponse{PachToken: pachToken}, nil
@@ -1796,6 +1814,22 @@ func (a *apiServer) insertAuthTokenNoTTL(ctx context.Context, tokenHash string, 
 		err := a.insertAuthTokenNoTTLInTransaction(ctx, txnCtx, tokenHash, subject)
 		return err
 	})
+}
+
+func (a *apiServer) getAuthTokenInTransaction(ctx context.Context, txnCtx *txncontext.TransactionContext, tokenHash string, subject string) (*authToken, error) {
+	if err := authdb.EnsurePrincipal(ctx, txnCtx.SqlTx, subject); err != nil {
+		return nil, errors.Wrapf(err, "ensure principal %v", subject)
+	}
+	token := &authToken{}
+	if err := txnCtx.SqlTx.GetContext(ctx, token,
+		`SELECT token_hash, subject FROM auth.auth_tokens WHERE token_hash=$1 AND subject=$2 LIMIT 1`,
+		tokenHash, subject); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, err //nolint:wrapcheck
+		}
+		return nil, errors.Wrapf(err, "error storing token")
+	}
+	return token, nil
 }
 
 func (a *apiServer) insertAuthTokenNoTTLInTransaction(ctx context.Context, txnCtx *txncontext.TransactionContext, tokenHash string, subject string) error {
