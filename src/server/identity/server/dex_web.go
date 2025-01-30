@@ -199,25 +199,36 @@ func (w *dexWeb) startWebServer(config *identity.IdentityServerConfig, connector
 // getServer either returns a cached web server, or starts a new one
 // if the config or set of connectors has changed
 func (w *dexWeb) getServer(ctx context.Context) (*dex_server.Server, error) {
+	fmt.Println("NGS --- calling get server")
 	var server *dex_server.Server
 	config, err := w.apiServer.GetIdentityServerConfig(ctx, &identity.GetIdentityServerConfigRequest{})
 	if err != nil {
 		return nil, errors.EnsureStack(err)
 	}
+	fmt.Println("NGS --- get server: listing connectors")
 	connectors, err := w.apiServer.ListIDPConnectors(ctx, &identity.ListIDPConnectorsRequest{})
 	if err != nil {
 		return nil, errors.EnsureStack(err)
 	}
+	fmt.Println("NGS --- get server: finished listing connectors")
 	// Get a read lock to check if the server needs a restart
 	w.RLock()
 	if w.serverNeedsRestart(config.Config, connectors) {
+		fmt.Println("NGS --- need to restart dex server")
 		// If the server needs to restart, unlock and acquire the write lock
 		w.RUnlock()
-		return w.startWebServer(config.Config, connectors)
+		s, err := w.startWebServer(config.Config, connectors)
+		if err != nil {
+			fmt.Println("NGS --- failed to start web server after attemping to restart", err)
+			return nil, errors.EnsureStack(err)
+		}
+		fmt.Println("NGS --- success! returning dex server")
+		return s, nil
 	}
 
 	server = w.server
 	w.RUnlock()
+	fmt.Println("NGS --- success! returning dex server")
 	return server, nil
 }
 
@@ -254,6 +265,7 @@ func (w *dexWeb) interceptApproval(server *dex_server.Server) func(http.Response
 
 // ServeHTTP proxies requests to the Dex server, if it's configured.
 func (w *dexWeb) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	fmt.Println("NGS --- ", r.UserAgent(), "context", r.Context(), "host", r.Host, "remote addr", r.RemoteAddr)
 	server, err := w.getServer(r.Context())
 	if server == nil {
 		dexStartupErrorCountMetric.Inc()

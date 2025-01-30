@@ -299,6 +299,7 @@ func (a *apiServer) EnvBootstrap(ctx context.Context) error {
 				return err
 			}
 		}
+		fmt.Println("NGS --- checking to see if we need to configure role-bindings from environment")
 		// cluster role bindings
 		if a.env.Config.AuthClusterRoleBindings != "" {
 			log.Info(ctx, "setting up cluster role bindings")
@@ -340,6 +341,9 @@ func (a *apiServer) EnvBootstrap(ctx context.Context) error {
 					return errors.Wrapf(err, "modify cluster role bindings")
 				}
 			}
+			fmt.Println("NGS --- successfully configured role-bindings from the environment")
+		} else {
+			fmt.Println("NGS --- do not need to configure role bindings from the environment")
 		}
 		return nil
 	}(); err != nil {
@@ -1633,18 +1637,20 @@ func (a *apiServer) SetConfiguration(ctx context.Context, req *auth.SetConfigura
 
 	// block until the watcher observes the write
 	if err := backoff.Retry(func() error {
-		record, ok := a.configCache.Load().(*auth.OIDCConfig)
-		if !ok {
-			return errors.Errorf("could not retrieve auth config from cache")
+		record := proto.Clone(&DefaultOIDCConfig).(*auth.OIDCConfig)
+		err := a.authConfig.ReadOnly().Get(ctx, configKey, record)
+		if err != nil {
+			return errors.Wrapf(err, "getting config from database")
 		}
 		if !proto.Equal(record, configToStore) {
 			return errors.Errorf("config in cache was not updated")
 		}
 		return nil
 	}, backoff.RetryEvery(time.Second)); err != nil {
+		fmt.Println("NGS --- retrying to observe the config write.")
 		return nil, err
 	}
-
+	fmt.Println("NGS --- successfully set auth configuration via environment.")
 	return &auth.SetConfigurationResponse{}, nil
 }
 

@@ -3,10 +3,10 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"go.uber.org/zap"
 	"net/http"
 	"os"
-
-	"go.uber.org/zap"
 	"sigs.k8s.io/yaml"
 
 	"github.com/pachyderm/pachyderm/v2/src/identity"
@@ -133,6 +133,7 @@ func (a *apiServer) setIdentityServerConfig(ctx context.Context, req *identity.S
 
 func (a *apiServer) GetIdentityServerConfig(ctx context.Context, req *identity.GetIdentityServerConfigRequest) (resp *identity.GetIdentityServerConfigResponse, retErr error) {
 	var config []*identity.IdentityServerConfig
+	fmt.Println("NGS --- calling get identity server config")
 	err := a.env.DB.SelectContext(ctx, &config, "SELECT issuer, id_token_expiry AS idtokenexpiry, rotation_token_expiry AS rotationtokenexpiry FROM identity.config WHERE id=$1;", configKey)
 	if err != nil {
 		return nil, errors.EnsureStack(err)
@@ -140,7 +141,6 @@ func (a *apiServer) GetIdentityServerConfig(ctx context.Context, req *identity.G
 	if len(config) == 0 {
 		return &identity.GetIdentityServerConfigResponse{Config: &identity.IdentityServerConfig{}}, nil
 	}
-
 	return &identity.GetIdentityServerConfigResponse{Config: config[0]}, nil
 }
 
