@@ -519,6 +519,8 @@ func (c *postgresReadOnlyCollection) watchRoutine(ctx context.Context, watcher *
 	// Do a list of the collection to get the initial state
 	val := cloneProtoMsg(c.template)
 
+	fmt.Println("NGS --- watch routing running for channel: ", watcher.channel, "watcher ID:", watcher.id, "watcher index", watcher.index, "watcher value", watcher.value)
+
 	lastTimestamp := func(m *model, target etcd.SortTarget) time.Time {
 		if target == SortByModRevision {
 			return m.UpdatedAt
@@ -547,6 +549,7 @@ func (c *postgresReadOnlyCollection) watchRoutine(ctx context.Context, watcher *
 			return errutil.ErrBreak
 		}
 
+		fmt.Println("FAHAD -- event for postgres watcher: key: ", m.Key)
 		return watcher.sendInitial(ctx, &watch.Event{
 			Key:      []byte(m.Key),
 			Value:    m.Proto,
@@ -607,6 +610,7 @@ func (c *postgresReadOnlyCollection) WatchOne(ctx context.Context, key interface
 	var watcher watch.Watcher
 	var err error
 	err = c.withKey(key, func(rawKey string) error {
+		fmt.Println("NGS --- WatchOne for key: ", key, "rawKey: ", rawKey)
 		watcher, err = c.watchOne(ctx, rawKey, opts...)
 		return err
 	})
@@ -616,7 +620,9 @@ func (c *postgresReadOnlyCollection) WatchOne(ctx context.Context, key interface
 func (c *postgresReadOnlyCollection) watchOne(ctx context.Context, key string, opts ...watch.Option) (watch.Watcher, error) {
 	options := watch.SumOptions(opts...)
 
-	watcher, err := newPostgresWatcher(c.db, c.listener, c.indexWatchChannel("key", key), c.template, nil, nil, options)
+	formattedKey := c.indexWatchChannel("key", key)
+	fmt.Println("NGS --- key being watched on inside watchOne() is: ", formattedKey)
+	watcher, err := newPostgresWatcher(c.db, c.listener, formattedKey, c.template, nil, nil, options)
 	if err != nil {
 		return nil, err
 	}

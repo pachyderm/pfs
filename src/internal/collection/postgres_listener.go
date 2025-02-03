@@ -3,6 +3,7 @@ package collection
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -147,6 +148,7 @@ func (pw *postgresWatcher) forwardNotifications(ctx context.Context) {
 func (pw *postgresWatcher) sendInitial(ctx context.Context, event *watch.Event) error {
 	select {
 	case pw.c <- event:
+		fmt.Println("NGS --- sending initial event for key:", event.Key)
 		return nil
 	case <-ctx.Done():
 		return errors.EnsureStack(context.Cause(ctx))
@@ -256,10 +258,13 @@ func parsePostgresEvent(payload string) *postgresEvent {
 		eventType: watch.EventError,
 	}
 
+	evType := "err"
 	switch parts[2] {
 	case "INSERT", "UPDATE":
+		evType = "put"
 		result.eventType = watch.EventPut
 	case "DELETE":
+		evType = "delete"
 		result.eventType = watch.EventDelete
 	}
 	if result.eventType == watch.EventError {
@@ -280,7 +285,7 @@ func parsePostgresEvent(payload string) *postgresEvent {
 	case "stored":
 		result.storedID = parts[6]
 	}
-
+	fmt.Println("NGS --- postgres event generated: key", result.key, "type", evType)
 	return result
 }
 
@@ -288,6 +293,13 @@ func (pe *postgresEvent) WatchEvent(ctx context.Context, db sqlx.ExtContext, tem
 	if pe.err != nil {
 		return &watch.Event{Err: pe.err, Type: watch.EventError}
 	}
+	evType := "err"
+	if pe.eventType == watch.EventDelete {
+		evType = "delete"
+	} else if pe.eventType == watch.EventPut {
+		evType = "put"
+	}
+	fmt.Println("NGS --- got event for key: ", pe.key, "type:", evType)
 	if pe.eventType == watch.EventDelete {
 		// Etcd doesn't return deleted row values - we could, but let's maintain parity
 		return &watch.Event{Key: []byte(pe.key), Type: pe.eventType, Template: template}

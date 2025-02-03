@@ -8,6 +8,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/pachyderm/pachyderm/v2/src/internal/authdb"
+	"github.com/pachyderm/pachyderm/v2/src/internal/dbutil"
+	"github.com/pachyderm/pachyderm/v2/src/internal/pachsql"
+	"github.com/pachyderm/pachyderm/v2/src/internal/pctx"
 	"strings"
 	"testing"
 	"time"
@@ -54,6 +58,37 @@ func TestActivate(t *testing.T) {
 	bindings, err := rootClient.GetClusterRoleBinding(rootClient.Ctx())
 	require.NoError(t, err)
 	require.Equal(t, tu.BuildClusterBindings(), bindings)
+}
+
+// TestRootTokenAlreadyExists should confirm that pachyderm can activate auth,
+// even if there is a root token already in the database.
+func TestRootTokenAlreadyExists(t *testing.T) {
+	env := at.EnvWithAuth(t)
+	c := env.PachClient
+	// Get anonymous client (this will activate auth, which is about to be
+	// deactivated, but it also activates Pacyderm enterprise, which is needed for
+	// this test to pass)
+	rootClient := tu.AuthenticateClient(t, c, auth.RootUser)
+
+	// deactivate the preset root client, so we can insert a new token.
+	_, err := rootClient.Deactivate(rootClient.Ctx(), &auth.DeactivateRequest{})
+	require.NoError(t, err)
+
+	// insert a mock token.
+	db := env.ServiceEnv.GetDBClient()
+	if err := dbutil.WithTx(pctx.TestContext(t), db, func(ctx context.Context, tx *pachsql.Tx) error {
+		if err := authdb.EnsurePrincipal(ctx, tx, auth.RootUser); err != nil {
+			return errors.Wrapf(err, "ensure principal %v", auth.RootUser)
+		}
+		_, err := tx.ExecContext(ctx,
+			`INSERT INTO auth.auth_tokens (token_hash, subject) VALUES ($1, $2)`,
+			auth.HashToken(tu.RootToken), auth.RootUser)
+		return err //nolint:wrapcheck
+	}); err != nil {
+		t.Fatal("unexpected error while inserting pre-existing root token", err.Error())
+	}
+	_, err = rootClient.AuthAPIClient.Activate(context.Background(), &auth.ActivateRequest{RootToken: tu.RootToken})
+	require.NoError(t, err)
 }
 
 // TestActivateKnownToken tests activating auth with a known token.

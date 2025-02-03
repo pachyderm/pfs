@@ -139,9 +139,9 @@
 					"version": "0.0.17+nmu1"
 				},
 				{
-					"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_amd64",
+					"key": "postgresql-client-common_248_amd64",
 					"name": "postgresql-client-common",
-					"version": "253.pgdg120+~20230725.2250.g53bdb68"
+					"version": "248"
 				},
 				{
 					"key": "perl_5.36.0-7-p-deb12u1_amd64",
@@ -229,9 +229,9 @@
 					"version": "6.4"
 				},
 				{
-					"key": "libpq5_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_amd64",
+					"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 					"name": "libpq5",
-					"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+					"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 				},
 				{
 					"key": "libldap-2.5-0_2.5.13-p-dfsg-5_amd64",
@@ -324,11 +324,11 @@
 					"version": "1.47.0-2"
 				}
 			],
-			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_amd64",
+			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 			"name": "postgresql-client-17",
-			"sha256": "f951dbf6eb8c8442596ca4a8489ec64ba1e6e4f62933a865f92997f7dc1d32fe",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250108.0535.g45aef9f_amd64.deb",
-			"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+			"sha256": "73021d791b6de218bda6374891d61fea034a0b7fb38507e5e91bc4135d2bcfd9",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250202.0535.g2548349_amd64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "amd64",
@@ -396,11 +396,11 @@
 		{
 			"arch": "amd64",
 			"dependencies": [],
-			"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_amd64",
+			"key": "postgresql-client-common_248_amd64",
 			"name": "postgresql-client-common",
-			"sha256": "58fc3af1623828342985c932cdebc87b8ff02942043612f80ff946304640a36a",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-common/postgresql-client-common_253.pgdg120+~20230725.2250.g53bdb68_all.deb",
-			"version": "253.pgdg120+~20230725.2250.g53bdb68"
+			"sha256": "da9a9f21d23d29a5a0aaf38083705a2b3528682c338006a2c14d1421c9ec88dd",
+			"url": "https://snapshot-cloudflare.debian.org/archive/debian/20241003T000000Z/pool/main/p/postgresql-common/postgresql-client-common_248_all.deb",
+			"version": "248"
 		},
 		{
 			"arch": "amd64",
@@ -558,11 +558,11 @@
 		{
 			"arch": "amd64",
 			"dependencies": [],
-			"key": "libpq5_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_amd64",
+			"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 			"name": "libpq5",
-			"sha256": "57f704303e5978d97cbdff70445881dd4eac8d26cb83f4e7154cd47953ffe929",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250108.0535.g45aef9f_amd64.deb",
-			"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+			"sha256": "2dfce91b21d3b2cdeb0c86811fb7ab41a62ea713edd3572b06b1f3b334b3ab0c",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250202.0535.g2548349_amd64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "amd64",
@@ -865,9 +865,9 @@
 					"version": "0.0.17+nmu1"
 				},
 				{
-					"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_arm64",
+					"key": "postgresql-client-common_248_arm64",
 					"name": "postgresql-client-common",
-					"version": "253.pgdg120+~20230725.2250.g53bdb68"
+					"version": "248"
 				},
 				{
 					"key": "perl_5.36.0-7-p-deb12u1_arm64",
@@ -955,9 +955,9 @@
 					"version": "6.4"
 				},
 				{
-					"key": "libpq5_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_arm64",
+					"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 					"name": "libpq5",
-					"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+					"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 				},
 				{
 					"key": "libldap-2.5-0_2.5.13-p-dfsg-5_arm64",
@@ -1050,11 +1050,11 @@
 					"version": "1.47.0-2"
 				}
 			],
-			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_arm64",
+			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 			"name": "postgresql-client-17",
-			"sha256": "55e2183987563e26bf5b2b965e4063d6d4b7d105cf31d674f4b7a5779322cb16",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250108.0535.g45aef9f_arm64.deb",
-			"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+			"sha256": "f058029501b927673a557b1b1da153f5228c0d86bab357f31caa98f4c47250bf",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250202.0535.g2548349_arm64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "arm64",
@@ -1122,11 +1122,11 @@
 		{
 			"arch": "arm64",
 			"dependencies": [],
-			"key": "postgresql-client-common_253.pgdg120-p-_20230725.2250.g53bdb68_arm64",
+			"key": "postgresql-client-common_248_arm64",
 			"name": "postgresql-client-common",
-			"sha256": "58fc3af1623828342985c932cdebc87b8ff02942043612f80ff946304640a36a",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-common/postgresql-client-common_253.pgdg120+~20230725.2250.g53bdb68_all.deb",
-			"version": "253.pgdg120+~20230725.2250.g53bdb68"
+			"sha256": "da9a9f21d23d29a5a0aaf38083705a2b3528682c338006a2c14d1421c9ec88dd",
+			"url": "https://snapshot-cloudflare.debian.org/archive/debian/20241003T000000Z/pool/main/p/postgresql-common/postgresql-client-common_248_all.deb",
+			"version": "248"
 		},
 		{
 			"arch": "arm64",
@@ -1284,11 +1284,11 @@
 		{
 			"arch": "arm64",
 			"dependencies": [],
-			"key": "libpq5_17.2-1.pgdg120-p-_20250108.0535.g45aef9f_arm64",
+			"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 			"name": "libpq5",
-			"sha256": "d8d1bd610fa80b7b05846855817479a6b5582056ea06751eed1198c22b2a9fa1",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250108.0535.g45aef9f_arm64.deb",
-			"version": "17.2-1.pgdg120+~20250108.0535.g45aef9f"
+			"sha256": "3cde7219b09270c9f01748021a13952178e8e15b5d99c087951b2047bd190cbb",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250202.0535.g2548349_arm64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "arm64",
