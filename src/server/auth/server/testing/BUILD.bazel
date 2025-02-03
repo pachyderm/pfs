@@ -11,9 +11,13 @@ go_test(
     deps = [
         ":testing",
         "//src/auth",
+        "//src/internal/authdb",
         "//src/internal/backoff",
         "//src/internal/client",
+        "//src/internal/dbutil",
         "//src/internal/errors",
+        "//src/internal/pachsql",
+        "//src/internal/pctx",
         "//src/internal/protoutil",
         "//src/internal/require",
         "//src/internal/testutil",

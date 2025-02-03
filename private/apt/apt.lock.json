@@ -229,9 +229,9 @@
 					"version": "6.4"
 				},
 				{
-					"key": "libpq5_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_amd64",
+					"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 					"name": "libpq5",
-					"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+					"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 				},
 				{
 					"key": "libldap-2.5-0_2.5.13-p-dfsg-5_amd64",
@@ -324,11 +324,11 @@
 					"version": "1.47.0-2"
 				}
 			],
-			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_amd64",
+			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 			"name": "postgresql-client-17",
-			"sha256": "05057c793100ef99e0940f0fc669a0a5979ae7dea53109d989164d8339b2a11d",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250129.2335.g6e41e9e_amd64.deb",
-			"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+			"sha256": "73021d791b6de218bda6374891d61fea034a0b7fb38507e5e91bc4135d2bcfd9",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250202.0535.g2548349_amd64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "amd64",
@@ -558,11 +558,11 @@
 		{
 			"arch": "amd64",
 			"dependencies": [],
-			"key": "libpq5_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_amd64",
+			"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_amd64",
 			"name": "libpq5",
-			"sha256": "1f132f3725124030564afbd460af4c7b5b90b49d460267e84316fdab48a41690",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250129.2335.g6e41e9e_amd64.deb",
-			"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+			"sha256": "2dfce91b21d3b2cdeb0c86811fb7ab41a62ea713edd3572b06b1f3b334b3ab0c",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250202.0535.g2548349_amd64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "amd64",
@@ -955,9 +955,9 @@
 					"version": "6.4"
 				},
 				{
-					"key": "libpq5_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_arm64",
+					"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 					"name": "libpq5",
-					"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+					"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 				},
 				{
 					"key": "libldap-2.5-0_2.5.13-p-dfsg-5_arm64",
@@ -1050,11 +1050,11 @@
 					"version": "1.47.0-2"
 				}
 			],
-			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_arm64",
+			"key": "postgresql-client-17_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 			"name": "postgresql-client-17",
-			"sha256": "21a2c0c1e07684458da5d15302e94183f5b83f7db8053f1bb689fd4deeaf0d30",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250129.2335.g6e41e9e_arm64.deb",
-			"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+			"sha256": "f058029501b927673a557b1b1da153f5228c0d86bab357f31caa98f4c47250bf",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/postgresql-client-17_17.2-1.pgdg120+~20250202.0535.g2548349_arm64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "arm64",
@@ -1284,11 +1284,11 @@
 		{
 			"arch": "arm64",
 			"dependencies": [],
-			"key": "libpq5_17.2-1.pgdg120-p-_20250129.2335.g6e41e9e_arm64",
+			"key": "libpq5_17.2-1.pgdg120-p-_20250202.0535.g2548349_arm64",
 			"name": "libpq5",
-			"sha256": "d2e009532fc7a28487236fb159d28b3fcfefd297712bd8fa192b6ef8241adc92",
-			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250129.2335.g6e41e9e_arm64.deb",
-			"version": "17.2-1.pgdg120+~20250129.2335.g6e41e9e"
+			"sha256": "3cde7219b09270c9f01748021a13952178e8e15b5d99c087951b2047bd190cbb",
+			"url": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-17/libpq5_17.2-1.pgdg120+~20250202.0535.g2548349_arm64.deb",
+			"version": "17.2-1.pgdg120+~20250202.0535.g2548349"
 		},
 		{
 			"arch": "arm64",

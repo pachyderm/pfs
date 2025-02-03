@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: Pachyderm, Inc. <info@pachyderm.com>
+# SPDX-License-Identifier: Apache-2.0
+deployTarget: custom
+
+oidc:
+  mockIDP: true
+  upstreamIDPsSecretName: pachyderm-upstream-secret
+
+pachd:
+  rootToken: root
+  image:
+    tag: local
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512M
+  service:
+    type: NodePort
+  metrics:
+    enabled: false
+  clusterDeploymentID: dev
+  # to enable enterprise features pass in pachd.activateEnterprise=true, and a valid pachd.enterpriseLicenseKey
+  activateAuth: true
+  activateEnterprise: true
+  enterpriseLicenseKey: "eyJ0b2tlbiI6IntcImlkXCI6XCJjNTEzZDI2OC04ZDdjLTQ2YjAtODM2OC01YjE3NzE2MzI1NWNcIixcImV4cGlyeVwiOlwiMjAyNS0wNi0xOVQxOTowNTowMVpcIn0iLCJzaWduYXR1cmUiOiJyOEQwNHk3cHJqYkRpNnY0cWc5T0VJV0VlVjZrck1jV0plMm1ZRG43SW54ZXppWDF2TUF6dGN3YmU0VUlKbS9wZ2xGWEw4VVJhQkltVENGL1g3UldNOWszbUJDcHp5UlhrQXEyNkNJSVJSc3ZtT3RBZDFxNWdzNGgvNm9yZmJDT29XMlJYd1FGeTJVWVNUOEo0K1IycFdmYitWUmpKYllHSXNlNndjcGFYamh0QUpnQnRQL3F0UytsSjdGdGVFaEpUN3VKOHdQSmt3RUUzaTVmOTB6WStwR09vT2xHckRaVDhxdUF5eUxnWWNiWktqY2l6K3Bya1o4N005WWRJRXNsN2p4Wi9HbFJ6cHJNRWtNNFpZbW95VlNpb3BtVmE0bmVpK1cyQVVoNldQc2dFUW1XRlpVVU82ejdKVUtiakFxK3JodGEzcG9NKzZYVWlHeS91YmpHVUREbUNpTlljL0pldHM2b3hHV05yc05NY2k1Y3JyOTcrTDdIbVlDK0orVmYxVHJBbnZKTWFTaEpyNkw3dzMvdFY3amFRWC9zbkk5QzIxeDBFVmdwU3lwU0kzZ0JDOCtXUUFydFZMT3VkRjQ5RnF3TlhqOHAxQ0hDY0xPQ3NaenVadHErK2FRSnFVa2xaempkNjFZcFRkYTFHekxUb2RXT1NSZTJSbEtnUTA2KzdIclZyNk9OYUlPd2VNRlNsQU9TY0ZNRVI5QXhDL005c2RnOWpOQmFoRUY2dHUxL0JNL0NaczQxdkZaQTJReDh6VDRnK2RqQVpwWkhrVXQrbzJsTXg0TXloT2pLK2syekVqVWZXaHpLVjRkbzc3TThiUUtiL1JuY09WM3k0QXBGSjAwOTk1TmRhdy9yM3pTY3JOSW1nOVlEQzFTQ0pCbE9wRDJQR1NlZko4WT0ifQ=="
+  storage:
+    storageURL: s3://pachyderm-test?endpoint=minio.default.svc.cluster.local:9000&disableSSL=true&region=dummy-region
+    backend: AMAZON
+    amazon:
+      id: "minioadmin"
+      secret: "minioadmin"
+etcd:
+  service:
+    type: NodePort
+
+postgresql:
+  enabled: false
+
+global:
+  # Configure external postgres
+  postgresql:
+    postgresqlAuthType: "scram-sha-256"
+    postgresqlUsername: "postgres"
+    postgresqlPassword: "xbbI1jGtmb"
+    postgresqlDatabase: "pachyderm"
+    postgresqlHost: "10.96.101.60"
+    postgresqlPort: "5432"
+
+# postgres has to be deployed prior to this chart.
+# use the following commands:
+# helm repo add bitnami https://charts.bitnami.com/bitnami
+# helm install my-postgresql bitnami/postgresql --version 16.4.6
+# you can connect to the database with the password here:
+# kubectl get secrets my-postgresql -o yaml | grep postgres-password | cut -d ' ' -f 4 | base64 -d;
+# then create the 'pachyderm' and 'dex' databases with:
+# CREATE DATABASE pachyderm; CREATE DATABASE dex;

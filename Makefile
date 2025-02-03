@@ -96,6 +96,9 @@ docker-build:
 docker-build-amd:
 	DOCKER_BUILDKIT=1 goreleaser release -p 1 --snapshot $(GORELDEBUG) --skip-publish --clean -f goreleaser/docker-amd.yml
 
+docker-build-arm:
+	DOCKER_BUILDKIT=1 goreleaser release -p 1 --snapshot $(GORELDEBUG) --skip-publish --clean -f goreleaser/docker-arm.yml
+
 docker-build-netcat:
 	docker build --network=host -f etc/test-images/Dockerfile.netcat -t pachyderm/ubuntuplusnetcat:local .
 
@@ -164,6 +167,14 @@ launch: install check-kubectl
 	helm install pachyderm etc/helm/pachyderm --set deployTarget=LOCAL
 	# wait for the pachyderm to come up
 	kubectl wait --for=condition=ready pod -l app=pachd --timeout=5m
+	@echo "pachd launch took $$(($$(date +%s) - $(STARTTIME))) seconds"
+
+
+launch-ngs-debugging: check-kubectl check-kubectl-connection
+	$(eval STARTTIME := $(shell date +%s))
+	kubectl apply -f etc/testing/minio.yaml --namespace=default
+	helm install pachyderm etc/helm/pachyderm -f etc/helm/examples/NGS-debugging.yaml
+	# wait for the pachyderm to come up
 	@echo "pachd launch took $$(($$(date +%s) - $(STARTTIME))) seconds"
 
 launch-dev: check-kubectl check-kubectl-connection
@@ -419,6 +430,7 @@ check-bazel:
 	launch-dev-vm \
 	clean-launch-kube \
 	launch \
+	launch-ngs-debugging \
 	launch-dev \
 	clean-launch \
 	proto \
